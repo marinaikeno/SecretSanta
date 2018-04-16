@@ -1,0 +1,43 @@
+@{
+     Layout = "_IndexLayout";
+     ViewData["Title"] = "@ViewBag.Event.Name"; 
+}
+<div class="row">
+    <div class="col-12 p-3">
+        <h1>@ViewBag.Event.Name</h1>
+        @if(ViewBag.SecretSanta != null) {
+            <div class="card border-primary mt-3" style="max-width: 508px">
+                <div class="card-header text-white bg-primary">
+                    <h5>Secret Santa has been generated</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0 d-inline-block">You have been appointed to:&nbsp</p><h4 class="d-inline-block">  @ViewBag.SecretSanta.Recipient.FirstName</h4>
+                    <p class="mb-0 ml-1"><a href="/Dashboard/Wishlist/@ViewBag.SecretSanta.RecipientId">Click Here</a> to view wishlist</p>
+                </div>
+            </div>
+        }
+        <h3 class="mt-3">Event Info: </h3>
+        <div class="card border-secondary mt-3">
+            <div class="card-body">
+                <p><strong>Exchange Date: </strong>@ViewBag.Event.ExchangeDate.ToString("MMMM dd, yyyy")</p>
+                <p><strong>Spending Limit: </strong>$@ViewBag.Event.SpendLimit</p>
+                @{
+                    if(ViewBag.Event.ExchangeLocation=="individual")
+                    {
+                        <p>
+                            <strong>Exchange Location: </strong>
+                             Gifts will be exchanged individually
+                        </p>
+                    }
+                    if(ViewBag.Event.ExchangeLocation=="party")
+                    {
+                        <p>
+                            <strong>Exchange Location: </strong>
+                            Gifts will be exchanged at the event
+                        </p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Signup"; 
+}
+<div class="row">
+    <div class="col-12 p-3">
+        @if(ViewBag.Invalid!=null) {
+            <div class="alert alert-dismissible alert-primary">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4 class="alert-heading">Error!</h4>
+                <p class="mb-0">@ViewBag.Invalid</p>
+            </div>
+        }
+        <h1>Sign up</h1>
+        <div class="card border-secondary mt-3" style="max-width: 508px">
+            <div class="card-body">
+
+                <form asp-controller="Home" asp-action="SubmitSignup" method="POST">
+                     @model SecretSanta.Models.RegisterViewModel
+                    <div class="form-group row pl-3">
+                        <label asp-for="Email">Email: </label>
+                        <input class="form-control ml-3" asp-for="Email" />
+                        <span class="has-error ml-3" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="form-group row pl-3">
+                        <label asp-for="FirstName">First Name: </label>
+                        <input class="form-control ml-3" asp-for="FirstName" />
+                        <span class="has-error ml-3" asp-validation-for="FirstName"></span>
+                    </div>
+                    <div class="form-group row pl-3">
+                        <label asp-for="LastName">Last Name: </label>
+                        <input class="form-control ml-3" asp-for="LastName" />
+                        <span class="has-error ml-3" asp-validation-for="LastName"></span>
+                    </div>
+                    <div class="form-group row pl-3">
+                        <label asp-for="Password">Password: </label>
+                        <input class="form-control ml-3" asp-for="Password" />
+                        <span class="has-error ml-3" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="form-group row pl-3">
+                        <label asp-for="C_Password">Confirm Password: </label>
+                        <input class="form-control ml-3" asp-for="C_Password" />
+                        <span class="has-error ml-3" asp-validation-for="C_Password"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

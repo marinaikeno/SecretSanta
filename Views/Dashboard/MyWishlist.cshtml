@@ -1,0 +1,44 @@
+@{
+     Layout = "_IndexLayout";
+     ViewData["Title"] = "My Wishlist"; 
+}
+<div class="row">
+    <div class="col-12 p-3">
+        <div class="card border-secondary mb-3" style="max-width: 508px;">
+            <div class="card-body">
+                <h4 class="card-title">Add an item to your wishlist</h4>
+                 @model SecretSanta.Models.WishViewModel
+                <form asp-controller="Dashboard" asp-action="NewWish" method="POST">
+                    <div class="form-group row pl-3">
+                        <label asp-for="Name">Item Name: </label>
+                        <input class="form-control ml-3" asp-for="Name" />
+                        <span class="has-error ml-3" asp-validation-for="Name"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+        <h1>My Wishlist</h1>
+        @{
+            if(ViewBag.Wishlist.Count>0)
+             {
+                <ul class="list-group">
+                    @foreach(var item in ViewBag.Wishlist)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @item.Name
+                        </li>
+                    }
+                </ul>
+             }
+             if(ViewBag.Wishlist.Count==0)
+             {
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        You have no items in your wishlist
+                    </li>
+                </ul>
+             }
+        }
+    </div>
+</div>

@@ -1,0 +1,30 @@
+@{
+    Layout = "_IndexLayout";
+    ViewData["Title"] = "Wishlist"; 
+}
+<div class="row">
+    <div class="col-12 p-3">
+        <h1>@ViewBag.Recipient.FirstName's Wishlist</h1>
+        @{
+            if(ViewBag.Wishlist.Count>0)
+             {
+                <ul class="list-group">
+                    @foreach(var item in ViewBag.Wishlist)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @item.Name
+                        </li>
+                    }
+                </ul>
+             }
+             if(ViewBag.Wishlist.Count==0)
+             {
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                         @ViewBag.Recipient.FirstName has no items
+                    </li>
+                </ul>
+             }
+        }
+    </div>
+</div>

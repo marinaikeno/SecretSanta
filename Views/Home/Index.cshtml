@@ -1,0 +1,18 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home"; 
+}
+
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="jumbotron">
+            <h1 class="display-3">Welcome to Secret Santa</h1>
+            <p class="lead">A simple web application to organize your secret santa events</p>
+            <hr class="my-4">
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" role="button" asp-controller="Home" asp-action="Signup">Create an account</a>
+                <a class="d-block mt-2" asp-controller="Home" asp-action="Signin">Already signed up? Sign in here</a>
+            </p>
+        </div>
+    </div>
+</div>
