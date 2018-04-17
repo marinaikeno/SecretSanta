@@ -77,8 +77,9 @@ namespace SecretSanta.Controllers
             if (isLogged())
             {
                 ViewBag.User = GetLoggedUser();
-                ViewBag.EventOrganized = GetLoggedUser().EventOrganized;
-                ViewBag.MyEvents = _context.Participants.Include(part => part.Event).Where(part => part.UserId == GetUserId()).ToList();
+                // ViewBag.EventOrganized = GetLoggedUser().EventOrganized;
+                ViewBag.EventOrganized = GetLoggedUser().EventOrganized.OrderBy(e => e.ExchangeDate).ToList();
+                ViewBag.MyEvents = _context.Participants.Include(part => part.Event).Where(part => part.UserId == GetUserId()).OrderBy(e => e.Event.ExchangeDate).ToList();
                 ViewBag.Success = TempData["Success"];
                 ViewBag.DeleteEvent = TempData["DeleteEvent"];
                 ViewBag.Error = TempData["Error"];
