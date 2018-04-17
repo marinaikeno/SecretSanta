@@ -24,84 +24,118 @@
             }
         }
         <h1>Edit Event</h1>
-        @if(ViewBag.SecretSanta.Count==0 && ViewBag.AllAccepted)
-        {
-            <div class="card border-secondary mt-3" style="max-width: 508px">
-                <div class="card-body">
-                    <strong>Everyone has accepted their invites</strong>
-                    <form action="/Dashboard/GenerateSecretSanta/@ViewBag.Event.EventId" method="POST">
-                        <button type="submit" class="btn btn-primary">Generate Secret Santas</button>
-                    </form>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                @if(ViewBag.SecretSanta.Count==0 && ViewBag.AllAccepted)
+                {
+                    <div class="card border-secondary mt-3" style="max-width: 508px">
+                        <div class="card-body">
+                            <strong>Everyone has accepted their invites</strong>
+                            <form action="/Dashboard/GenerateSecretSanta/@ViewBag.Event.EventId" method="POST">
+                                <button type="submit" class="btn btn-primary">Generate Secret Santas</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                <div class="card border-secondary mt-3" style="max-width: 508px">
+                    <div class="card-body">
+                        <form action="/Dashboard/UpdateEvent/@ViewBag.Event.EventId" method="POST">
+                            @model SecretSanta.Models.EventViewModel
+                            <div class="form-group row pl-3">
+                                <label asp-for="Name">Event Name: </label>
+                                <input class="form-control ml-3" asp-for="Name" value="@ViewBag.Event.Name" />
+                                <span class="has-error ml-3" asp-validation-for="Name"></span>
+                            </div>
+                            <div class="form-group row pl-3">
+                                <label asp-for="ExchangeDate">Exchange Date: </label>
+                                @{
+                                    string ExchangeDate = ViewBag.Event.ExchangeDate.ToString("yyyy-MM-dd");
+                                }
+                                <input class="form-control ml-3" type="date" asp-for="ExchangeDate" value="@ExchangeDate"/>
+                                <span class="has-error ml-3" asp-validation-for="ExchangeDate"></span>
+                            </div>
+                            <div class="form-group row pl-3">
+                                <label asp-for="SpendLimit">Spending Limit: </label>
+                                <div class="d-inline-block">
+                                    <div class="input-group ml-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input class="form-control" style="max-width: 195.06px" asp-for="SpendLimit" value="@ViewBag.Event.SpendLimit"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="has-error ml-3" asp-validation-for="SpendLimit"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Exchange Location: </label>
+                                @{
+                                    if(ViewBag.Event.ExchangeLocation == "individual")
+                                    {
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="checkIndividual" asp-for="ExchangeLocation" value="individual" class="custom-control-input" checked="">
+                                            <label class="custom-control-label" for="checkIndividual">Gifts will be exchanged individually</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" asp-for="ExchangeLocation" id="checkParty" value="party" class="custom-control-input">
+                                            <label class="custom-control-label" for="checkParty">Gifts will be exchanged at the event</label>
+                                        </div>
+                                    }
+                                    if(ViewBag.Event.ExchangeLocation == "party")
+                                    {
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="checkIndividual" asp-for="ExchangeLocation" value="individual" class="custom-control-input">
+                                            <label class="custom-control-label" for="checkIndividual">Gifts will be exchanged individually</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" asp-for="ExchangeLocation" id="checkParty" value="party" class="custom-control-input" checked="">
+                                            <label class="custom-control-label" for="checkParty">Gifts will be exchanged at the event</label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            @if(ViewBag.SecretSanta.Count==0) {
+                                <div class="form-group">
+                                    <label>Input Participant Emails</label>
+                                    <input class="form-control" type="text" name="ParticiantEmails" placeholder="Please separate emails by commas">
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        }
-        <div class="card border-secondary mt-3" style="max-width: 508px">
-            <div class="card-body">
-                <form action="/Dashboard/UpdateEvent/@ViewBag.Event.EventId" method="POST">
-                    @model SecretSanta.Models.EventViewModel
-                    <div class="form-group row pl-3">
-                        <label asp-for="Name">Event Name: </label>
-                        <input class="form-control ml-3" asp-for="Name" value="@ViewBag.Event.Name" />
-                        <span class="has-error ml-3" asp-validation-for="Name"></span>
-                    </div>
-                    <div class="form-group row pl-3">
-                        <label asp-for="ExchangeDate">Exchange Date: </label>
-                         @{
-                             string ExchangeDate = ViewBag.Event.ExchangeDate.ToString("yyyy-MM-dd");
-                         }
-                        <input class="form-control ml-3" type="date" asp-for="ExchangeDate" value="@ExchangeDate"/>
-                        <span class="has-error ml-3" asp-validation-for="ExchangeDate"></span>
-                    </div>
-                    <div class="form-group row pl-3">
-                        <label asp-for="SpendLimit">Spending Limit: </label>
-                        <div class="d-inline-block">
-                            <div class="input-group ml-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">$</span>
-                                </div>
-                                <input class="form-control" style="max-width: 195.06px" asp-for="SpendLimit" value="@ViewBag.Event.SpendLimit"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="has-error ml-3" asp-validation-for="SpendLimit"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Exchange Location: </label>
-                        @{
-                            if(ViewBag.Event.ExchangeLocation == "individual")
-                            {
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="checkIndividual" asp-for="ExchangeLocation" value="individual" class="custom-control-input" checked="">
-                                    <label class="custom-control-label" for="checkIndividual">Gifts will be exchanged individually</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" asp-for="ExchangeLocation" id="checkParty" value="party" class="custom-control-input">
-                                    <label class="custom-control-label" for="checkParty">Gifts will be exchanged at the event</label>
-                                </div>
+            <div class="col-12 col-md-6">
+                <div class="card border-secondary mt-3" style="max-width: 508px">
+                    <div class="card-body">
+                        <strong>Members who accepted invites:</strong>
+                        <ul>
+                             @{
+                                foreach(var member in ViewBag.EventMembers)
+                                {
+                                    if(member.Accepted)
+                                    {
+                                        <li>@member.User.FirstName @member.User.LastName</li>
+                                    }
+                                }
                             }
-                            if(ViewBag.Event.ExchangeLocation == "party")
-                            {
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="checkIndividual" asp-for="ExchangeLocation" value="individual" class="custom-control-input">
-                                    <label class="custom-control-label" for="checkIndividual">Gifts will be exchanged individually</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" asp-for="ExchangeLocation" id="checkParty" value="party" class="custom-control-input" checked="">
-                                    <label class="custom-control-label" for="checkParty">Gifts will be exchanged at the event</label>
-                                </div>
+                        </ul>
+                        <strong>Members yet to accept their invite:</strong>
+                        <ul>
+                            @{
+                                foreach(var member in ViewBag.EventMembers)
+                                {
+                                    if(!member.Accepted)
+                                    {
+                                        <li>@member.User.FirstName @member.User.LastName</li>
+                                    }
+                                }
                             }
-                        }
+                        </ul>
                     </div>
-                    @if(ViewBag.SecretSanta.Count==0) {
-                        <div class="form-group">
-                            <label>Input Participant Emails</label>
-                            <input class="form-control" type="text" name="ParticiantEmails" placeholder="Please separate emails by commas">
-                        </div>
-                    }
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @{
      Layout = "_IndexLayout";
-     ViewData["Title"] = "@ViewBag.Event.Name"; 
+     ViewData["Title"] = @ViewBag.Event.Name; 
 }
 <div class="row">
     <div class="col-12 p-3">
@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <p class="mb-0 d-inline-block">You have been appointed to:&nbsp</p><h4 class="d-inline-block">  @ViewBag.SecretSanta.Recipient.FirstName</h4>
-                    <p class="mb-0 ml-1"><a href="/Dashboard/Wishlist/@ViewBag.SecretSanta.RecipientId">Click Here</a> to view wishlist</p>
+                    <p class="mb-0 ml-1"><a href="/Dashboard/Wishlist/@ViewBag.SecretSanta.RecipientId">Click Here</a> to view @ViewBag.SecretSanta.Recipient.FirstName's wishlist</p>
                 </div>
             </div>
         }
@@ -37,6 +37,13 @@
                         </p>
                     }
                 }
+                <strong>Members: </strong>
+                <ul>
+                    @foreach(var member in ViewBag.EventMembers)
+                    {
+                        <li>@member.User.FirstName @member.User.LastName</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>

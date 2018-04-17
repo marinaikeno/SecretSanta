@@ -136,6 +136,7 @@ namespace SecretSanta.Controllers
                 if (isParticipant(GetLoggedUser(), eventId))
                 {
                     ViewBag.Event = GetEvent(eventId);
+                    ViewBag.EventMembers = _context.Participants.Include(part => part.User).Where(part => (part.EventId == eventId && part.Accepted == true)).ToList();
                     ViewBag.SecretSanta = _context.SecretSantaModels.Include(ss => ss.Recipient).Where(secret => (secret.EventId == eventId)).SingleOrDefault(ss => ss.UserId == GetUserId());
                     return View();
                 }
@@ -189,6 +190,7 @@ namespace SecretSanta.Controllers
                 ViewBag.Event = GetEvent(eventId);
                 ViewBag.SecretSanta = _context.SecretSantaModels.Where(ss => ss.EventId == eventId).ToList();
                 ViewBag.InvalidEmails = TempData["InvalidEmails"];
+                ViewBag.EventMembers = _context.Participants.Include(part => part.User).Where(part => (part.EventId == eventId)).ToList();
                 List<Participant> Participants = _context.Participants.Where(part => part.EventId == eventId).ToList();
                 Boolean AllAccepted = true;
                 foreach (Participant participant in Participants)
