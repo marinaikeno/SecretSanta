@@ -292,69 +292,58 @@ namespace SecretSanta.Controllers
                 Users.Add(participant.User);
                 Recipients.Add(participant.User);
             }
-            int Total = Users.Count;
-            if (Users.Count == 1)
+            int Total = Participants.Count;
+            if (Total == 1)
             {
                 TempData["Error"] = $"You must have at least 2 participants to generate secret santa";
             }
             else
             {
-                Boolean hasEnd = false;
-                while (!hasEnd)
+                for(int i=0; i<Users.Count; i++)
+                {
+                    int rand = RandomNumber(0, Users.Count);
+                    User temp = Users[i]; 
+                    Users[i] = Users[rand]; 
+                    Users[rand] = temp;
+                }
+                User firstUser = Users[0];
+                Users.Add(firstUser);
+                for(int i=0; i<Users.Count-1; i++)
                 {
                     SecretSantaModel NewSecretSanta = new SecretSantaModel();
-                    int rand = RandomNumber(0, Users.Count);
-                    User user = Users[0];
-                    User recipient = Recipients[rand];
-                    Boolean isValid = true;
-                    if (user != recipient)
-                    {
-                        if (Total % 2 == 1)
-                        {
-                            SecretSantaModel CheckSecretSanta = _context.SecretSantaModels.SingleOrDefault(ss => ss.RecipientId == recipient.UserId);
-                            if (CheckSecretSanta != null && CheckSecretSanta.UserId == user.UserId)
-                            {
-                                isValid = false;
-                            }
-                        }
-                        if (isValid)
-                        {
-                            NewSecretSanta.UserId = user.UserId;
-                            NewSecretSanta.RecipientId = recipient.UserId;
-                            NewSecretSanta.EventId = eventId;
-                            _context.SecretSantaModels.Add(NewSecretSanta);
-                            _context.SaveChanges();
-                            Users.Remove(user);
-                            Recipients.Remove(recipient);
-                            if (Users.Count == 0)
-                            {
-                                hasEnd = true;
-                            }
-                        }
-                    }
+                    User user = Users[i];
+                    User recipient = Users[i+1];
+                    NewSecretSanta.UserId = user.UserId;
+                    NewSecretSanta.RecipientId = recipient.UserId;
+                    NewSecretSanta.EventId = eventId;
+                    _context.SecretSantaModels.Add(NewSecretSanta);
+                    _context.SaveChanges();
                 }
             }
             return RedirectToAction("Index");
         }
-        [HttpPost]
         [Route("/Dashboard/DeleteEvent/{eventId}")]
         public IActionResult DeleteEvent(int eventId)
         {
-            Event DeleteEvent = GetEvent(eventId);
-            _context.Events.Remove(DeleteEvent);
-            List<Participant> RemoveParticipants = _context.Participants.Where(p => p.EventId == DeleteEvent.EventId).ToList();
-            List<SecretSantaModel> RemoveSecretSantas = _context.SecretSantaModels.Where(ss => ss.EventId == DeleteEvent.EventId).ToList();
-            foreach (Participant participant in RemoveParticipants)
+            if(isLogged() && (GetEvent(eventId).OrganizerId == GetUserId()))
             {
-                _context.Participants.Remove(participant);
+                Event DeleteEvent = GetEvent(eventId);
+                _context.Events.Remove(DeleteEvent);
+                List<Participant> RemoveParticipants = _context.Participants.Where(p => p.EventId == DeleteEvent.EventId).ToList();
+                List<SecretSantaModel> RemoveSecretSantas = _context.SecretSantaModels.Where(ss => ss.EventId == DeleteEvent.EventId).ToList();
+                foreach (Participant participant in RemoveParticipants)
+                {
+                    _context.Participants.Remove(participant);
+                }
+                foreach (SecretSantaModel secretsanta in RemoveSecretSantas)
+                {
+                    _context.SecretSantaModels.Remove(secretsanta);
+                }
+                _context.SaveChanges();
+                TempData["DeleteEvent"] = $"Succesfully deleted {DeleteEvent.Name}";
+                return RedirectToAction("Index");
             }
-            foreach (SecretSantaModel secretsanta in RemoveSecretSantas)
-            {
-                _context.SecretSantaModels.Remove(secretsanta);
-            }
-            _context.SaveChanges();
-            TempData["DeleteEvent"] = $"Succesfully deleted {DeleteEvent.Name}";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

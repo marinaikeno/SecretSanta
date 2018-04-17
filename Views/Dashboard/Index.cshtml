@@ -129,11 +129,11 @@
                                 <td>@Event.ExchangeDate.ToString("MMMM dd, yyyy")</td>
                                 <td>
                                     <a class="mr-3" href="/Dashboard/EditEvent/@Event.EventId">Edit Event</a>
-                                    <a class="mr-3" href="" data-toggle="modal" data-target="#deleteEvent">Delete Event</a>
+                                    <a class="mr-3" href="/Dashboard/DeleteEvent/@Event.EventId">Delete Event</a>
                                 </td>
                             </tr>
                             <!-- Delete Event are you sure -->
-                            <div class="modal" id="deleteEvent">
+                            <!-- <div class="modal" id="deleteEvent">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-body text-center pt-5 pb-5">
@@ -145,7 +145,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         }
                     }
                     @if(ViewBag.EventOrganized.Count<1)
