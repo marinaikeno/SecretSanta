@@ -4,6 +4,13 @@ This project is a web application that allows users to organize Secret Santa eve
 <br />
 <br />
 [Click here to check it out!](ec2-18-191-204-241.us-east-2.compute.amazonaws.com)
+<br />
+## About
+* ASP.NET Core based web application structured via MVC that allows users to organize Secret Santa events
+* RESTful routing architecture
+* Features random Secret Santa gnerator that assigns each member of the event to another member
+* Technologies and Languages used: C#, ASP.NET Core, MySQL Workbench, HTML, CSS, Bootstrap
+* Deployed using AWS EC2
 ## Get Started
 1. An user can first sign up to create an account. Each user will have a unique email address, and thus cannot register if the same email is already in use. After signing up, or signing in, the user will be taken to their dashboard page. If signed in, the user will be automatically taken to the dashboard page from the root route. The dashboard page displays Invites (where the user can accept an invite to an Event), My Events (where you can click and view the events the user is apart of), and Organized Events (where the can edit Events that he/she created).
 1. To add a new event, you can click 'Add Event' on the top right side of the nav bar. When a new event is created, the user will be redirected to the dashboard where he/she can edit the event to invite other users.
